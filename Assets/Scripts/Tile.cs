@@ -9,6 +9,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
 
     public void Init(bool isOffset){
-        _renderer.color = isOffset ? _offsetColor : _baseColor;
+        Color c = isOffset ? _offsetColor : _baseColor;
+        c.a = 1f; // Tiles are fully opaque
+        _renderer.color = c;
     }
 }
