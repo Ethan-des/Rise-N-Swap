@@ -28,7 +28,7 @@ public class GridManager : MonoBehaviour
                 //Colors in the tiles
                 //Is x even and y odd or is y odd and x even?
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                //spawnedTile.Init(isOffset);
+                spawnedTile.Init(isOffset);
             }
         }
 
