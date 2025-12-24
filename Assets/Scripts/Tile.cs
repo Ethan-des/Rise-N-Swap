@@ -9,16 +9,20 @@ public class Tile : MonoBehaviour
     //[SerializeField] private Color _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
 
+    void Awake()
+    {
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
     public void Init(bool isOffset){
-       
-        if (_renderer == null)
-            _renderer = GetComponent<SpriteRenderer>();
+
+          Color c = isOffset ? _offsetColor : _baseColor;
+          c.a = 1f; // Tiles are fully opaque
+          _renderer.color = c;
+
+         // Debug.Log($"{name} | isOffset={isOffset} | color={c}");
        
 
-        Color c = isOffset ? _offsetColor : _baseColor;
-        c.a = 1f; // Tiles are fully opaque
-        _renderer.color = c;
-
-        Debug.Log($"{name} | isOffset={isOffset} | color={c}");
+       // _renderer.color = isOffset ? Color.black : Color.green;
     }
 }
