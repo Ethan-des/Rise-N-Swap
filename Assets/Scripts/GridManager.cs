@@ -16,9 +16,12 @@ public class GridManager : MonoBehaviour
     //To store and get the tiles
     //private Dictionary<Vector2, Tile> _tiles;
 
+    public Color[] possibleColors; //Assings five colors in the inspector
+
     void Start(){
         Debug.Log("Generating grid");
         GenerateGrid();
+        //StartCoroutine(FillGridCoroutine());
     }
 
     void GenerateGrid(){
@@ -41,6 +44,15 @@ public class GridManager : MonoBehaviour
 
         //Determines the position of the camera
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -20);
+    }
+
+    void FillRow(int row)
+    {
+        for (int x = 0; x < _width; x++)
+        {
+            Color randomColor = possibleColors[Random.Range(0, 5)];
+            
+        }
     }
 
     /*
