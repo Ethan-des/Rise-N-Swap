@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid(); //Generates grid
-        StartCoroutine(FillGridCoroutine()); //Fills each row with random colors
+        //StartCoroutine(FillGridCoroutine()); //Fills each row with random colors
     }
 
     void GenerateGrid()
