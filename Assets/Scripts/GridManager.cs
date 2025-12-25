@@ -1,69 +1,76 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    //determines the height and width of the playfield grid
-    [SerializeField] private int _width, _height;
-
-    //determines what the grid is made from
+    [Header("Grid Settings")]
+    [SerializeField] private int _width = 10;
+    [SerializeField] private int _height = 10;
     [SerializeField] private Tile _tilePrefab;
 
-    //reference to the game's camera
+    [Header("References")]
     [SerializeField] private Transform _cam;
 
-    //To store and get the tiles
-    //private Dictionary<Vector2, Tile> _tiles;
+    [Header("Colors")]
+    public Color[] possibleColors; // Assign 5 colors in inspector
 
-    public Color[] possibleColors; //Assings five colors in the inspector
+    private Tile[,] _tiles;
 
-    void Start(){
-        Debug.Log("Generating grid");
-        GenerateGrid();
-        //StartCoroutine(FillGridCoroutine());
+    void Start()
+    {
+        GenerateGrid(); //Generates grid
+        StartCoroutine(FillGridCoroutine()); //Fills each row with random colors
     }
 
-    void GenerateGrid(){
+    void GenerateGrid()
+    {
+        // Create the 2D array to hold tile references
+        _tiles = new Tile[_width, _height];
 
-        for (int x = 0; x < _width; x++){
-            for (int y = 0; y < _height; y++){
+        // Loop through each row (y) and column (x) to instantiate tiles
+        for (int y = 0; y < _height; y++)
+        {
+            for (int x = 0; x < _width; x++)
+            {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity);
-                //Determines where each tile is placed
                 spawnedTile.name = $"Tile {x} {y}";
-
-                //Colors in the tiles
-                //Is x even and y odd or is y odd and x even?
-                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawnedTile.Init(isOffset);
-
-                //To get the tiles onto the scene
-                //_tiles[new Vector2(x, y)] = spawnedTile;
+                _tiles[x, y] = spawnedTile;
             }
         }
 
-        //Determines the position of the camera
-        _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -20);
+        // Center the camera
+        if (_cam != null)
+        {
+            _cam.transform.position = new Vector3((_width - 1) / 2f, (_height - 1) / 2f, -20f);
+        }
     }
 
     void FillRow(int row)
     {
+        // Safety checks to avoid IndexOutOfRangeException
+        if (_tiles == null) return; // safety
+        if (row < 0 || row >= _height) return; // prevent invalid row
         for (int x = 0; x < _width; x++)
         {
-            Color randomColor = possibleColors[Random.Range(0, 5)];
-            
+            if (_tiles[x, row] != null)
+            {
+                // Ensure possibleColors array has elements
+                Color randomColor = possibleColors[Random.Range(0, possibleColors.Length)];
+                _tiles[x, row].SetColor(randomColor);
+            }
         }
     }
 
-    /*
-    public Tile GetTileAtPosition(Vector2 pos)
+    IEnumerator FillGridCoroutine()
     {
-        if(_tiles.TryGetValue(pos, out var tile))
+        // Loop from bottom row (0) to top row (_height - 1)
+        for (int y = 0; y < _height; y++)
         {
-            return tile;
-        }
+            // Fill this row with random colors
+            FillRow(y);
 
-        return null;
+            // Wait for a short delay before filling the next row
+            yield return new WaitForSeconds(0.3f);
+        }
     }
-    */
 }

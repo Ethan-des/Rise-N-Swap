@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    //Changes tile's color based on code from GridManager
-    [SerializeField] private Color _baseColor, _offsetColor;
-    //[SerializeField] private Color _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
@@ -15,26 +10,20 @@ public class Tile : MonoBehaviour
         _renderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void Init(bool isOffset){
-
-          Color c = isOffset ? _offsetColor : _baseColor;
-          c.a = 1f; // Tiles are fully opaque
-          _renderer.color = c;
-
-         // Debug.Log($"{name} | isOffset={isOffset} | color={c}");
-       
-
-       // _renderer.color = isOffset ? Color.black : Color.green;
+    // Set the tile’s color directly
+    public void SetColor(Color color)
+    {
+        _renderer.color = color;
     }
 
-    //Used to highlight squares on the grid
+    // Highlight on mouse hover
     void OnMouseEnter()
     {
-        _highlight.SetActive(true);
+        if (_highlight != null) _highlight.SetActive(true);
     }
 
     void OnMouseExit()
     {
-        _highlight.SetActive(false);
+        if (_highlight != null) _highlight.SetActive(false);
     }
 }
