@@ -20,11 +20,20 @@ public class GridManager : MonoBehaviour
 
     //private Tile[,] _tiles;
 
-    void Start()
+    IEnumerator Start()
     {
-        GenerateGrid(); //Generates grid
-        RowFill(); //Fills bottom row
-        
+        GenerateGrid();
+
+        // Initial spawn
+        yield return StartCoroutine(SpawnBottomRow());
+
+        while (true) // rising rows loop
+        {
+            yield return new WaitForSeconds(1f);
+            yield return StartCoroutine(UpOne());
+            yield return StartCoroutine(SpawnBottomRow());
+        }
+
     }
 
     void GenerateGrid()
@@ -62,9 +71,21 @@ public class GridManager : MonoBehaviour
     }
 
     //Fills first row one by one
-    IEnumerator RowFill()
+    IEnumerator SpawnBottomRow()
     {
-        Debug.Log("Starting Loop");
+        Debug.Log("Starting Reset Loop");
+        // Reset bottom row instantly
+        for (int x = 0; x < _width; x++)
+        {
+            Tile tile = GetTileAt(x, 0);
+            if (tile != null)
+            {
+                tile.SetColor(0); // default color
+            }
+        }
+        Debug.Log("Stoping Reset Loop");
+
+        Debug.Log("Starting Fill Loop");
         for (int x = 0; x < _width; x++)
         {
             Tile tile = GetTileAt(x, 0);
@@ -76,14 +97,42 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(1);
 
         }
-        Debug.Log("Starting Loop");
+        Debug.Log("Stopping Fill Loop");
     }
 
-    //Allows the row to fill up one by one and not all at once
-    void FillDelay()
+    int[] CacheBottomRow()
+    {
+        int[] colors = new int[_width];
+
+        for (int x = 0; x < _width; x++)
+        {
+            Tile tile = GetTileAt(x, 0);
+            colors[x] = tile != null ? tile.ColorIndex : 0;
+        }
+
+        return colors;
+    }
+
+    IEnumerator UpOne()
     {
 
+        // Move everything UP (top → bottom)
+        for (int y = _height - 1; y > 0; y--)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                Tile above = GetTileAt(x, y);
+                Tile below = GetTileAt(x, y - 1);
+
+                if (above != null && below != null && below.ColorIndex != 0)
+                {
+                    above.SetColor(below.ColorIndex);
+                }
+            }
+        }
+        yield return null; // let Unity redraw one frame
     }
+
 
     bool IsBottom(Tile tile)
     {

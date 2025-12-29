@@ -6,6 +6,9 @@ public class Tile : MonoBehaviour
     public int x;
     public int y;
 
+    //Color Index
+    public int ColorIndex { get; private set; }
+
     [Header("Colors")]
     [SerializeField] private Color _1, _2, _3, _4, _5, _default;
 
@@ -26,6 +29,8 @@ public class Tile : MonoBehaviour
     //Made to awake the renderer
     void Awake()
     {
+        ColorIndex = 0; // default
+
         // Outline should ALWAYS be black
         outlineRenderer.color = _default;
 
@@ -40,6 +45,8 @@ public class Tile : MonoBehaviour
     // Set the tile’s color directly
     public void SetColor(int color)
     {
+        ColorIndex = color; // Made to store current states of colors
+
         switch (color)
         {
             case 1:
