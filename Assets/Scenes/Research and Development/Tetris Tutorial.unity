@@ -180,6 +180,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b95191d6f044530bece5f65fe2b5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tetrominoes:
+  - tetromino: 0
+    tile: {fileID: 0}
+  - tetromino: 1
+    tile: {fileID: 0}
+  - tetromino: 2
+    tile: {fileID: 0}
+  - tetromino: 3
+    tile: {fileID: 0}
+  - tetromino: 4
+    tile: {fileID: 0}
+  - tetromino: 5
+    tile: {fileID: 0}
+  - tetromino: 6
+    tile: {fileID: 0}
 --- !u!1 &325581262
 GameObject:
   m_ObjectHideFlags: 0
