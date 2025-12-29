@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class Tetromino : MonoBehaviour
+//enum = enumerated type of data
+//This enum is to hold information on all Tetrimono shapes
+public enum Tetromino
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    I,
+    O,
+    T,
+    J,
+    L,
+    S,
+    Z
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+//Custom data structure that stores data for each tetrimino
+public struct TetrominoData
+{
+    public Tetromino tetromino;
+    public Tile tile;
 }
