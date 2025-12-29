@@ -2,52 +2,63 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    //Tile Coordinates
+    public int x;
+    public int y;
+
+    [Header("Colors")]
     [SerializeField] private Color _1, _2, _3, _4, _5, _default;
-    [SerializeField] private SpriteRenderer _renderer;
+
+    //What determines a tile's color
+    [Header("Renderers")]
+    [SerializeField] private SpriteRenderer outlineRenderer;
+    [SerializeField] private SpriteRenderer fillRenderer;
+    [SerializeField] private SpriteRenderer highlightRenderer;
+
+    //For debugging, makes sure the tile is still there even when invisible
     [SerializeField] private GameObject _highlight;
 
-    /*void Awake()
+    /*void Start()
     {
-        _renderer = GetComponentInChildren<SpriteRenderer>();
+        SetColor(5);
     }*/
+
+    //Made to awake the renderer
+    void Awake()
+    {
+        // Outline should ALWAYS be black
+        outlineRenderer.color = Color.black;
+
+        // Fill starts as default
+        fillRenderer.color = _default;
+
+        // Highlight hidden by default
+        highlightRenderer.color = Color.white;
+        highlightRenderer.gameObject.SetActive(false);
+    }
 
     // Set the tile’s color directly
     public void SetColor(int color)
     {
-        if(color == 1)
+        switch (color)
         {
-            _renderer.color = _1;
-        }
-        else if(color == 2)
-        {
-            _renderer.color = _2;
-        }
-        else if (color == 3)
-        {
-            _renderer.color = _3;
-        }
-        else if (color == 4)
-        {
-            _renderer.color = _4;
-        }
-        else if (color == 5)
-        {
-            _renderer.color = _5;
-        }
-        else
-        {
-            _renderer.color = _default;
+            case 1: fillRenderer.color = _1; break;
+            case 2: fillRenderer.color = _2; break;
+            case 3: fillRenderer.color = _3; break;
+            case 4: fillRenderer.color = _4; break;
+            case 5: fillRenderer.color = _5; break;
+            default: fillRenderer.color = _default; break;
         }
     }
 
     // Highlight on mouse hover
     void OnMouseEnter()
     {
-        if (_highlight != null) _highlight.SetActive(true);
+        highlightRenderer.gameObject.SetActive(true);
     }
 
     void OnMouseExit()
     {
-        if (_highlight != null) _highlight.SetActive(false);
+        highlightRenderer.gameObject.SetActive(false);
     }
 }
