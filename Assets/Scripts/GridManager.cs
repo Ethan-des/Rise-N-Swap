@@ -23,7 +23,7 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid(); //Generates grid
-        RowFill();
+        RowFill(); //Fills bottom row
         
     }
 
@@ -62,8 +62,9 @@ public class GridManager : MonoBehaviour
     }
 
     //Fills first row one by one
-    void RowFill()
+    IEnumerator RowFill()
     {
+        Debug.Log("Starting Loop");
         for (int x = 0; x < _width; x++)
         {
             Tile tile = GetTileAt(x, 0);
@@ -72,7 +73,10 @@ public class GridManager : MonoBehaviour
                 int color = UnityEngine.Random.Range(1, 6);
                 tile.SetColor(color);
             }
+            yield return new WaitForSeconds(1);
+
         }
+        Debug.Log("Starting Loop");
     }
 
     //Allows the row to fill up one by one and not all at once
