@@ -72,8 +72,6 @@ public class GridManager : MonoBehaviour
                 int color = UnityEngine.Random.Range(1, 6);
                 tile.SetColor(color);
             }
-
-            Invoke("RowFill", 1f);
         }
     }
 
