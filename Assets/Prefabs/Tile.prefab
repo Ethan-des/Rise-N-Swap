@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 0.95, y: 0.95, z: 5}
+  m_LocalScale: {x: 0.92, y: 0.92, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6812935154586787356}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -268,6 +268,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20fdfbee202e64134b4cc1041258d9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _1: {r: 1, g: 0.05991669, b: 0, a: 1}
+  _2: {r: 1, g: 0.58280706, b: 0, a: 1}
+  _3: {r: 1, g: 0.93989503, b: 0, a: 1}
+  _4: {r: 0.15972674, g: 1, b: 0, a: 1}
+  _5: {r: 0, g: 0.6436324, b: 1, a: 1}
+  _default: {r: 1, g: 1, b: 1, a: 0}
   _renderer: {fileID: 3995825157416883531}
   _highlight: {fileID: 6957301421709769001}
 --- !u!61 &1564763342985709090

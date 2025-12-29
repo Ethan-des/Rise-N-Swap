@@ -1,40 +1,50 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
     [Header("Grid Settings")]
-    [SerializeField] private int _width = 10;
-    [SerializeField] private int _height = 10;
+    [SerializeField] private int _width = 6;
+    [SerializeField] private int _height = 12;
     [SerializeField] private Tile _tilePrefab;
-
+    //var spawnedTile
     [Header("References")]
     [SerializeField] private Transform _cam;
+
+    private Dictionary<Vector2, Tile> _tiles;
 
     [Header("Colors")]
     public Color[] possibleColors; // Assign 5 colors in inspector
 
-    private Tile[,] _tiles;
+    //private Tile[,] _tiles;
 
     void Start()
     {
         GenerateGrid(); //Generates grid
-        //StartCoroutine(FillGridCoroutine()); //Fills each row with random colors
+        //RowFill();
+        
     }
 
     void GenerateGrid()
     {
         // Create the 2D array to hold tile references
-        _tiles = new Tile[_width, _height];
+        _tiles = new Dictionary<Vector2, Tile>();
 
         // Loop through each row (y) and column (x) to instantiate tiles
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)
             {
-                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity);
+                Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 0), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
-                _tiles[x, y] = spawnedTile;
+
+                // the grid's square's colors are dependent on 1, 2, 3, 4, or 5 
+                var isOffset = UnityEngine.Random.Range(1, 6);
+                spawnedTile.SetColor(isOffset);
+
+                _tiles[new Vector2(x, y)] = _tilePrefab;
             }
         }
 
@@ -45,32 +55,18 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void FillRow(int row)
+    /*void RowFill()
     {
-        // Safety checks to avoid IndexOutOfRangeException
-        if (_tiles == null) return; // safety
-        if (row < 0 || row >= _height) return; // prevent invalid row
         for (int x = 0; x < _width; x++)
         {
-            if (_tiles[x, row] != null)
+            // the grid's square's colors are dependent on 1, 2, 3, 4, or 5 
+            var isOffset = UnityEngine.Random.Range(1, 6);
+            Vector2 key = new Vector2(x, 0);
+
+            if (_tiles.TryGetValue(x, 0))
             {
-                // Ensure possibleColors array has elements
-                Color randomColor = possibleColors[Random.Range(0, possibleColors.Length)];
-                _tiles[x, row].SetColor(randomColor);
+                //tile.SetColor(isOffset);
             }
         }
-    }
-
-    IEnumerator FillGridCoroutine()
-    {
-        // Loop from bottom row (0) to top row (_height - 1)
-        for (int y = 0; y < _height; y++)
-        {
-            // Fill this row with random colors
-            FillRow(y);
-
-            // Wait for a short delay before filling the next row
-            yield return new WaitForSeconds(0.3f);
-        }
-    }
+    }*/
 }
