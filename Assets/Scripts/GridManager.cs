@@ -47,7 +47,7 @@ public class GridManager : MonoBehaviour
                 //var isOffset = UnityEngine.Random.Range(1, 6);
                 //tile.SetColor(isOffset);
 
-                _tiles[new Vector2Int(x, y)] = _tilePrefab;
+                _tiles[new Vector2Int(x, y)] = tile;
             }
         }
 
@@ -72,7 +72,15 @@ public class GridManager : MonoBehaviour
                 int color = UnityEngine.Random.Range(1, 6);
                 tile.SetColor(color);
             }
+
+            Invoke("RowFill", 1f);
         }
+    }
+
+    //Allows the row to fill up one by one and not all at once
+    void FillDelay()
+    {
+
     }
 
     bool IsBottom(Tile tile)

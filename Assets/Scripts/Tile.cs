@@ -27,7 +27,7 @@ public class Tile : MonoBehaviour
     void Awake()
     {
         // Outline should ALWAYS be black
-        outlineRenderer.color = Color.black;
+        outlineRenderer.color = _default;
 
         // Fill starts as default
         fillRenderer.color = _default;
@@ -42,12 +42,30 @@ public class Tile : MonoBehaviour
     {
         switch (color)
         {
-            case 1: fillRenderer.color = _1; break;
-            case 2: fillRenderer.color = _2; break;
-            case 3: fillRenderer.color = _3; break;
-            case 4: fillRenderer.color = _4; break;
-            case 5: fillRenderer.color = _5; break;
-            default: fillRenderer.color = _default; break;
+            case 1:
+                fillRenderer.color = _1;
+                outlineRenderer.color = Color.black;
+                break;
+            case 2:
+                fillRenderer.color = _2;
+                outlineRenderer.color = Color.black;
+                break;
+            case 3:
+                fillRenderer.color = _3;
+                outlineRenderer.color = Color.black;
+                break;
+            case 4:
+                fillRenderer.color = _4;
+                outlineRenderer.color = Color.black;
+                break;
+            case 5:
+                fillRenderer.color = _5;
+                outlineRenderer.color = Color.black;
+                break;
+            default:
+                fillRenderer.color = _default;
+                outlineRenderer.color = Color.black;
+                break;
         }
     }
 
