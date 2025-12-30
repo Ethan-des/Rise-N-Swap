@@ -18,20 +18,38 @@ public class GridManager : MonoBehaviour
     [Header("Colors")]
     public Color[] possibleColors; // Assign 5 colors in inspector
 
+    [Header("Game Over Screen")]
+    [SerializeField] GameObject gameOverPanel;
+
+    public Boolean gameover = false;
+
     //private Tile[,] _tiles;
+
+    //Bag Randomizer
+    private List<int> colorBag = new List<int>();
+    private int bagIndex = 0;
 
     IEnumerator Start()
     {
+        //To make sure game over panel isn't present at start of game
+        gameOverPanel.gameObject.SetActive(false);
         GenerateGrid();
 
         // Initial spawn
         yield return StartCoroutine(SpawnBottomRow());
 
-        while (true) // rising rows loop
+        while (gameover == false) // rising rows loop
         {
             yield return new WaitForSeconds(1f);
             yield return StartCoroutine(UpOne());
             yield return StartCoroutine(SpawnBottomRow());
+            CheckTopRow(); // check game over after new row spawned
+        }
+
+        if (gameover)
+        {
+            Debug.Log("Ending game loop due to Game Over");
+            // You can stop coroutines or show a UI here
         }
 
     }
@@ -91,7 +109,7 @@ public class GridManager : MonoBehaviour
             Tile tile = GetTileAt(x, 0);
             if (tile != null)
             {
-                int color = UnityEngine.Random.Range(1, 6);
+                int color = GetNextColorFromBag();
                 tile.SetColor(color);
             }
             yield return new WaitForSeconds(1);
@@ -117,7 +135,7 @@ public class GridManager : MonoBehaviour
     {
 
         // Move everything UP (top → bottom)
-        for (int y = _height - 1; y > 0; y--)
+        for (int y = _height - 1; y > 0; y--)// top row is _height - 1
         {
             for (int x = 0; x < _width; x++)
             {
@@ -131,6 +149,58 @@ public class GridManager : MonoBehaviour
             }
         }
         yield return null; // let Unity redraw one frame
+    }
+
+    void InitializeBag()
+    {
+        colorBag.Clear();
+        for (int i = 1; i <= possibleColors.Length; i++)
+        {
+            colorBag.Add(i);
+        }
+
+        // Shuffle the bag
+        for (int i = 0; i < colorBag.Count; i++)
+        {
+            int j = UnityEngine.Random.Range(i, colorBag.Count);
+            int temp = colorBag[i];
+            colorBag[i] = colorBag[j];
+            colorBag[j] = temp;
+        }
+
+        bagIndex = 0;
+    }
+
+    //To determine if there is a game over or not
+    void CheckTopRow()
+    {
+        Debug.Log("Starting Game Over Check Loop");
+        
+        for (int x = 0; x < _width; x++)
+        {
+            Tile tile = GetTileAt(x, _height - 1); // top row is _height - 1
+            if (tile != null && tile.ColorIndex != 0) // non-default color = occupied
+            {
+                gameover = true;
+                gameOverPanel.gameObject.SetActive(true);
+                Debug.Log("Game Over! Tile reached the top row at column: " + x);
+                break; // no need to check further
+            }
+
+        }
+        Debug.Log("Stoping Game Over Check Loop");
+    }
+
+    int GetNextColorFromBag()
+    {
+        if (colorBag.Count == 0 || bagIndex >= colorBag.Count)
+        {
+            InitializeBag();
+        }
+
+        int color = colorBag[bagIndex];
+        bagIndex++;
+        return color;
     }
 
 
